@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Product;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
@@ -41,5 +42,16 @@ class ProductCrudController extends AbstractCrudController
 
         yield TextField::new('stripePriceId', 'Identifiant Prix Stripe')
             ->hideWhenCreating();
+    }
+
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        /** @var Product $product */
+        $product = $entityInstance;
+
+        dd($product);
+
+
+        parent::persistEntity($entityManager, $entityInstance);
     }
 }
