@@ -10,10 +10,18 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use phpDocumentor\Reflection\Types\Void_;
 use Vich\UploaderBundle\Form\Type\VichFileType;
+use App\Service\StripeService;
 
 class ProductCrudController extends AbstractCrudController
 {
+    public function __construct(
+        private StripeService $stripeService
+    ) {
+
+    }
+
     public static function getEntityFqcn(): string
     {
         return Product::class;
@@ -49,9 +57,26 @@ class ProductCrudController extends AbstractCrudController
         /** @var Product $product */
         $product = $entityInstance;
 
-        dd($product);
+        $stripeProduct = $this->stripeService->createProduct($product);
+
+        $product->setStripeProductId($stripeProduct->id);
+
+        $stripePrice = $this->stripeService->createPrice($product);
+
+        $product->setStripePriceId($stripePrice->id);
 
 
         parent::persistEntity($entityManager, $entityInstance);
     }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void 
+    {
+        /** @var Product $product */
+        $product = $entityInstance;
+
+        $this->stripeService->updateProduct($product);
+
+        parent::updateEntity($entityManager, $entityInstance);
+    }
+
 }
