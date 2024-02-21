@@ -25,7 +25,7 @@ export default function ProductGrid() {
     const products = useProducts();
     const [open, setOpen] = React.useState(undefined);
     
-    const handleClose = () => setOpen(undefined);
+    const handleClose = () => setOpen(!open);
     const handleShow = (id) => setOpen(id);
     // const toggleModal = () => {
     //     setOpen(!open)
@@ -34,11 +34,11 @@ export default function ProductGrid() {
     
     return (
         <div>
-        <Grid container marginTop={5}>
+        <Grid container marginTop={5} >
             {products?.map((product) => (
-                <Grid item key={product.id} xs={4}>
+                <Grid item key={product.id} xs={4} onClick={()=>handleShow(product.id)}>
                     <Box sx={{ width: 300, m: 2 }} >
-                        <Paper elevation={3} sx={{ p:2 }} onClick={()=>handleShow(product.id)}>
+                        <Paper elevation={3} sx={{ p:2 }} >
                             <Stack direction ="column" spacing={2}  >
                                <Box 
                                 component="img"
