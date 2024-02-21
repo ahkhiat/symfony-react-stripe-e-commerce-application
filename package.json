@@ -31,6 +31,7 @@
         "@fontsource/roboto": "^5.0.8",
         "@mui/icons-material": "^5.14.18",
         "@mui/material": "^5.14.18",
+        "bootstrap": "^5.3.3",
         "react-simple-code-editor": "^0.13.1"
     }
 }
